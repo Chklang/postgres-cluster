@@ -78,6 +78,7 @@ RUN echo "#!/bin/sh" > /slave.sh && \
     echo "        chmod 600 ~/.pgpass" >> /slave.sh && \
     echo "        pg_basebackup -U \$REPLIC_USER -h \$SLAVE_IP -p \$SLAVE_PORT -v -P -X fetch -D \$PGDATA" >> /slave.sh && \
     echo "        if [ \$? = 0 ]; then" >> /slave.sh && \
+    echo "            rm \$PGDATA/recovery.conf" >> /slave.sh && \
     echo "            echo \"Restore from slave OK, start server\"" >> /slave.sh && \
     echo "            rm -Rf ~/postgresql" >> /slave.sh && \
     echo "            rm -Rf \$PGDATA.save" >> /slave.sh && \

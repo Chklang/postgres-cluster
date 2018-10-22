@@ -1,6 +1,8 @@
 # postgres-cluster
 If you have your VM where you db master which fall, so you can't recreate another db master with old datas. With this image you can deploy a Slave and a Master, slave will only replicate master datas, and master will try to be intialized with slave data, and else will initialize from scratch.
 
+Warn : PGDATA is intentionally moved (i've used /var/lib/pgcluster) because image postgres:alpine defined data folder as volume by default, and to reinitialize cluster we must move data folder (so we me map to docker volume parent of data folder). It's the reason why, in the example, volumes is to data parent folder and not data folder
+
 Exemple of stack:
 
 - Add a label "pgstack=slave" on nodes to run the slave server
@@ -25,7 +27,7 @@ services:
     ports:
       - 5432
     volumes:
-      - pgdata_master:/var/lib/postgresql/data
+      - pgdata_master:/var/lib/pgcluster
     deploy:
       placement:
         constraints:
@@ -44,7 +46,7 @@ services:
     ports:
       - 5432
     volumes:
-      - pgdata_slave:/var/lib/postgresql/data
+      - pgdata_slave:/var/lib/pgcluster
     deploy:
       placement:
         constraints:

@@ -1,4 +1,5 @@
 FROM postgres:alpine
+ENV PGDATA /var/lib/pgcluster/data
 RUN echo "#!/bin/sh" > /slave.sh && \
     echo "if [[ -z \"\${REPLIC_USER}\" ]]; then" >> /slave.sh && \
     echo "    export REPLIC_USER=replication" >> /slave.sh && \
